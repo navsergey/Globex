@@ -1,12 +1,24 @@
 import './App.css'
 import Search from "./components/Search.tsx";
-import users from '../consts.ts'
 import UserItem from "./components/UserItem.tsx";
 import UserCard from "./components/UserCard.tsx";
-import React from "react";
-
+import React, {useEffect} from "react";
+import {getUsers} from "./api/api.service.ts";
+import type {Employee, Employees} from "./api/api.types.ts"
 function App() {
     const [modal, setModal] = React.useState(false);
+    const [data, setData] = React.useState<Employees>([]);
+    const [selectedUser, setSelectedUser] = React.useState<Employee | null>(null);
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            const {data} = await getUsers();
+            setData(data);
+
+        }
+        void fetchUsers();
+    }, []);
+
     return (
         <>
             <div className="container">
@@ -14,14 +26,17 @@ function App() {
                     <Search/>
                     <div className="items-wrapper">
                         {
-                            users.map((user) => {
+                            data.map((user) => {
                                 return (
                                     <UserItem
-                                        onClick={() => setModal(true)}
-                                        key={user.user_mail}
-                                        user_name={user.user_name}
-                                        user_number={user.user_number}
-                                        user_mail={user.user_mail}
+                                        onClick={() => {
+                                            setSelectedUser(user);
+                                            setModal(true);
+                                        }}
+                                        key={user.email}
+                                        user_name={user.name}
+                                        user_number={user.phone}
+                                        user_mail={user.email}
                                     />
                                 )
                             })
@@ -30,6 +45,7 @@ function App() {
                     <UserCard
                         modal={modal}
                         setModal={setModal}
+                        user={selectedUser}
                     />
                 </div>
             </div>

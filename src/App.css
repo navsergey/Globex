@@ -112,7 +112,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     max-width: 500px;
-    padding: 24px;
+    padding: 24px 24px 64px 24px;
     display: flex;
     flex-direction: column;
     gap: 50px;
@@ -153,6 +153,17 @@
     grid-template-columns: 140px 1fr;
     column-gap: 16px;
     align-items: start;
+}
+
+.card-number-wrapper > :last-child,
+.card-mail-wrapper > :last-child,
+.card-data-wrapper > :last-child,
+.card-job-wrapper > :last-child,
+.card-division-wrapper > :last-child {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    color: #8189a3;
 }
 
 .card__info{
