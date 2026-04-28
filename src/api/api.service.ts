@@ -6,10 +6,10 @@ export async function getUsers (){
 }
 
 export async function  getUserByName (term : string = 'fer'){
-    const responce = await api.get(`http://localhost:3001/`,{
+    const {data} = await api.get(`http://localhost:3001/`,{
         params: {
             term
         }
     });
-    return responce;
+    return data;
 }

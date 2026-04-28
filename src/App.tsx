@@ -2,13 +2,15 @@ import './App.css'
 import Search from "./components/Search.tsx";
 import UserItem from "./components/UserItem.tsx";
 import UserCard from "./components/UserCard.tsx";
-import React, {useEffect} from "react";
-import {getUsers} from "./api/api.service.ts";
+import React, {useEffect, useState} from "react";
+import {getUserByName, getUsers} from "./api/api.service.ts";
 import type {Employee, Employees} from "./api/api.types.ts"
 function App() {
     const [modal, setModal] = React.useState(false);
     const [data, setData] = React.useState<Employees>([]);
     const [selectedUser, setSelectedUser] = React.useState<Employee | null>(null);
+    const [search, setSearch] = useState("");
+    console.log(search)
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -19,11 +21,22 @@ function App() {
         void fetchUsers();
     }, []);
 
+    useEffect(()=> {
+        const fetchUser = async () => {
+            const {data} = await getUserByName(search)
+            setData(data);
+        }
+        void fetchUser();
+    },[search])
+
     return (
         <>
             <div className="container">
                 <div className="container-inner">
-                    <Search/>
+                    <Search
+                        search = {search}
+                        setSearch = {setSearch}
+                    />
                     <div className="items-wrapper">
                         {
                             data.map((user) => {
